@@ -9,8 +9,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import UpdateProfile from './screens/UpdateProfile';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import MainScreen from "./screens/CalendarMeetupScreens/MainScreen";
-import Cal from "./screens/CalendarMeetupScreens/Cal";
-import Cale from "./screens/CalendarMeetupScreens/Cale";
+import SetMeeting from "./screens/CalendarMeetupScreens/SetMeeting";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -29,8 +28,7 @@ function HomeScreenn() {
 export default function App() {
   return (
     <>
-      {/* <Cal /> */}
-      <Cale />
+    <SetMeeting />
     </>
     // <NavigationContainer>
     //   <Stack.Navigator>
