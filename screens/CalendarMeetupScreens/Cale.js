@@ -1,39 +1,63 @@
-import React, { useState } from 'react'
-import { Button, StyleSheet, Text, View } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Agenda } from 'react-native-calendars';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { color } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import {auth, app} from '../../firebase';
 
 const Cale = ({navigation}) => {
     const [items, setItems] = useState({
-        i:{
-            date:"2021-12-09",
-            time:"12am",
-            about:"Birthday Meeting",
-        },
-        j:{
-            date:"2021-12-31",
-            time:"12am",
-            about:"Birthday Meeting",
-        },
-        k:{
-            date:"2021-12-28",
-            time:"12am",
-            about:"Birthday Meeting",
-        },
+        
+        // i:{
+        //     date:"2021-12-09",
+        //     time:"12am",
+        //     about:"Birthday Meeting",
+        // },
+        // j:{
+        //     date:"2021-12-31",
+        //     time:"12am",
+        //     about:"Birthday Meeting",
+        // },
+        // k:{
+        //     date:"2021-12-28",
+        //     time:"12am",
+        //     about:"Birthday Meeting",
+        // },
     });
     const [meetings, setMeetings] = useState();
     const [clickedDay, setClickedDay] = useState();
 
+    // get collection meetings
+    const itemRef = app.database().ref('/meetings');
+
     const loadItems = (day) => {
+        var myArray= [];
         for(var i in items){
-            if(items[i].date===day.dateString){
-                // console.log(items[i].about);
-                setMeetings(items[i])
+            if(items[i].myDate===day.dateString){
+                // console.log(items[i]);
+                
+                myArray.push(items[i]);
+                // setMeetings(items[i]);
             }
+            else{
+                setMeetings();
+            }
+            // console.log("element",myArray);
         }
+        setMeetings(myArray);
+        // console.log("Meetings:",meetings);
 
     };
+
+    useEffect(() => {
+        itemRef.on('value', (snapshot) => {
+            const allObjects = snapshot.val();
+            // console.log("ALL Meetings",allObjects);
+            setItems(allObjects);
+          }, (errorObject) => {
+            console.log('The read failed: ' + errorObject.name);
+          });
+    }, [])
 
     //  const renderItem=(item)=> {
     //      console.log("Hello");
@@ -75,15 +99,18 @@ const Cale = ({navigation}) => {
             {
                 meetings?(
                     <View style={{flex:1}}>
-                        <Text style={styles.item}>
-                        {meetings?.about}
-                        </Text>
-                        <Text style={styles.item}>
-                        {meetings?.about}
-                        </Text>
-                        <Text style={styles.item}>
-                        {meetings?.about}
-                        </Text>
+                        <ScrollView style={styles.scrollView}>
+                            {meetings.map((item,index)=> {
+                                // console.log(meetings);
+                                return (
+                                    <View key={index} style={styles.item}>
+                                        <Text>{item.meetingName}</Text>
+                                        <Text>{item.time}</Text>
+                                    </View>
+                                )
+                                })
+                            }
+                        </ScrollView>
                     </View>
                 ):(
                     <View style={styles.emptyDate}><Text style={styles.emptyDate}>No Meetings. Enjoy!</Text></View>
@@ -113,5 +140,8 @@ const styles = StyleSheet.create({
           alignItems:"center",
           fontSize:30,
           fontWeight:"bold"
-      }
+      },
+      scrollView: {
+        marginHorizontal: 20,
+      },
 })

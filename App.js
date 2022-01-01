@@ -19,31 +19,39 @@ function HomeScreenn() {
     <Drawer.Navigator>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Calendar & Meetup" component={MainScreen} />
-      {/* <Drawer.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Settings" component={Settings} /> */}
     </Drawer.Navigator>
   );
 }
 
 export default function App() {
   return (
-    <>
-    <SetMeeting />
-    </>
-    // <NavigationContainer>
-    //   <Stack.Navigator>
-    //     <Stack.Screen options={{headerShown:false}} name="Login" component={LoginScreen} />
-    //     <Stack.Screen options={{headerShown:false}} name="Register" component={RegisterScreen} />
-    //     <Stack.Screen
-    //       name="Home"
-    //       component={HomeScreenn}
-    //       options={{ headerShown: false }}
-    //     />
-    //     {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
-    //     {/* <StackScreens /> */}
-    //     <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
+    // <>
+    // <SetMeeting />
+    // </>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen options={{headerShown:false}} name="Login" component={LoginScreen} />
+        <Stack.Screen options={{headerShown:false}} name="Register" component={RegisterScreen} />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+        <Stack.Screen name="Meetups" component={Meetups}  options={{
+                headerRight: () => (
+                    <Button
+                      onPress={(navigation) => {
+                        // navigation.navigate("SetMeeting");
+                      }}
+                      title="Set Meeting"
+                      color="black"
+                    />
+                  ),
+            }}/>
+            <Stack.Screen name="SetMeeting" component={SetMeeting} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
