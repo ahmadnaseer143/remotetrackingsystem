@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import {auth, app} from '../firebase';
 
+
 // create a collection users
 // const itemRef = app.database().ref('/users');
 

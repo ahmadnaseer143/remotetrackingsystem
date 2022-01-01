@@ -24,12 +24,17 @@ const LoginScreen = () => {
   }
 
   const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-      })
-      .catch(error => alert(error.message))
+    if(email && password){
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then(userCredentials => {
+          const user = userCredentials.user;
+        })
+        .catch(error => alert("Please type correct Email and Password"))
+    }
+    else{
+      alert("Please Fill All Required Fields");
+    }
   }
 
   return (
@@ -74,13 +79,6 @@ const LoginScreen = () => {
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        {/* Register through Google */}
-        {/* <TouchableOpacity
-          onPress={handleSignUp}
-          style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonOutlineText}>google</Text>
-        </TouchableOpacity> */}
       </View>
     </View>
   )
@@ -117,18 +115,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 35,
   },
+  buttonOutline: {
+    backgroundColor: 'white',
+    marginTop: 5,
+    borderColor: '#0782F9',
+    borderWidth: 2,
+  },
   button: {
     backgroundColor: '#c22ea3',
     width: '100%',
     padding: 15,
     borderRadius: 30,
     alignItems: 'center',
-  },
-  buttonOutline: {
-    backgroundColor: 'white',
-    marginTop: 5,
-    borderColor: '#0782F9',
-    borderWidth: 2,
   },
   buttonText: {
     color: 'white',

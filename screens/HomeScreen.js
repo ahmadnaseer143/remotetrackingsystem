@@ -1,25 +1,59 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useEffect } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Image, Button } from 'react-native'
-import { auth, app } from '../firebase'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View, Image, Button, Touchable } from 'react-native'
+import { auth, app } from '../firebase';
+import * as ImagePicker from 'expo-image-picker';
 
 const HomeScreen = () => {
-  const navigation = useNavigation()
+  const [image, setImage] = useState(null);
+  const navigation = useNavigation();
+
+  // <TouchableOpacity
+  //         onPress={handleLogin}
+  //         style={styles.button}
+  //       >
+  //         <Text style={styles.buttonText}>Login</Text>
+  // </TouchableOpacity>
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
         headerRight: () => (
-            <Button
-              onPress={() => {
-                navigation.navigate("Meetups");
-              }}
-              title="Meetups"
-              color="black"
-            />
+          <TouchableOpacity onPress={() => {
+            navigation.navigate("Meetups")
+          }} style={styles.button}>
+            <Text style={styles.buttonText}>Meetups</Text>
+          </TouchableOpacity>
           ),
 
         });
   }, [navigation]);
+
+  const getImage = ()=>{
+    console.log(auth.currentUser);
+    setImage(auth.currentUser.photoURL);
+  }
+
+  const handleImagePress = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    // console.log(result.uri);
+    // console.log("current",auth.currentUser);
+    const update = {
+      photoURL: result.uri,
+    };
+    await auth.currentUser.updateProfile(update);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
 
   const handleSignOut = () => {
     auth
@@ -30,11 +64,18 @@ const HomeScreen = () => {
       .catch(error => alert(error.message))
   }
 
+  useEffect(() => {
+    getImage();
+  }, [])
+
   return (
     <View style={styles.container}>
       <View style={styles.header}></View>
               {/* <Text>Email: {auth.currentUser?.email}</Text> */}
-          <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+          <TouchableOpacity onPress={handleImagePress}>
+            {/* 'https://bootdey.com/img/Content/avatar/avatar6.png' */}
+            {image? <Image style={styles.avatar} source={{uri: image}}/> : <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/> }
+          </TouchableOpacity>
           <View style={styles.body}>
             <View style={styles.bodyContent}>
               <TouchableOpacity style={styles.buttonContainer}
@@ -68,10 +109,8 @@ const styles = StyleSheet.create({
     borderRadius: 63,
     borderWidth: 4,
     borderColor: "white",
-    marginBottom:10,
     alignSelf:'center',
-    position: 'absolute',
-    marginTop:130
+    marginTop:-70
   },
   body:{
     marginTop:100,
@@ -92,5 +131,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#c22ea3",
     borderColor:"yellow",
     borderWidth:1
-  }
+  },
+  button: {
+    backgroundColor: '#c22ea3',
+    padding: 10,
+    borderRadius: 30,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 16,
+  },
 })
