@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native'
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, Text, View, TextInput,TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TextInput,TouchableOpacity, Alert } from 'react-native'
 import {auth, app} from '../firebase';
 
 const UpdateProfile = () => {
@@ -7,6 +8,8 @@ const UpdateProfile = () => {
     const [email, setEmail] = useState();
     const [age, setAge] = useState();
     const [designation, setDesignation] = useState();
+
+    const navigation = useNavigation();
 
     // get collection users
     const itemRef = app.database().ref('/users');
@@ -19,7 +22,13 @@ const UpdateProfile = () => {
             name: name,
         })
         .then(() => {
-            alert("Updated Succesfully");
+            Alert.alert(
+                "Alert Title",
+                "Updated Succesfully",
+                [
+                  { text: "OK", onPress: () => navigation.goBack() }
+                ]
+            );
           })
           .catch(error => alert(error.message))
     }
@@ -27,6 +36,7 @@ const UpdateProfile = () => {
     useEffect(() => {
         itemRef.on('value', (snapshot) => {
             const allObjects = snapshot.val();
+            console.log(allObjects);
             for(let oneObject in allObjects){
                 if(oneObject==auth.currentUser?.uid){
                     setEmail(allObjects[oneObject].email);

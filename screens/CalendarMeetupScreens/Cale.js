@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useState, useEffect } from 'react'
 import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Agenda } from 'react-native-calendars';
@@ -5,7 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { color } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import {auth, app} from '../../firebase';
 
-const Cale = ({navigation}) => {
+const Cale = () => {
     const [items, setItems] = useState({
         
         // i:{
@@ -26,6 +27,23 @@ const Cale = ({navigation}) => {
     });
     const [meetings, setMeetings] = useState();
     const [clickedDay, setClickedDay] = useState();
+
+    const navigation = useNavigation()
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <Button
+                onPress={() => {
+                    navigation.navigate("SetMeeting");
+                }}
+                title="Set Meeting"
+                color="black"
+                />
+            ),
+
+            });
+    }, [navigation]);
 
     // get collection meetings
     const itemRef = app.database().ref('/meetings');
@@ -76,7 +94,7 @@ const Cale = ({navigation}) => {
     //   }
           
     return (
-        <View style={{flex:1,marginTop:30}}>
+        <View style={{flex:1}}>
             <Agenda
                 items={items}
                 loadItemsForMonth={loadItems}
@@ -87,8 +105,19 @@ const Cale = ({navigation}) => {
                     setMeetings();
                     loadItems(day);
                 }}
+                theme={{ 
+                    calendarBackground: "black", //agenda background
+                    agendaKnobColor: "#fff", // knob color
+                    backgroundColor: "#fff", // background color below agenda
+                    agendaDayTextColor: "#fff", // day name
+                    agendaDayNumColor: "#fff", // day number
+                    monthTextColor: "#fff", // name in calendar
+                    textDefaultColor: "red",
+                    dayTextColor: "#fff", // calendar day
+                    dotColor: "white", // dots
+                  }}
             />
-            <View style={{}}>
+            <View style={{position:"absolute", top:150, left:100}}>
                 <Text style={{alignItems:"center", textAlign:"center",paddingTop:10,fontSize:30,fontWeight:"bold"}}>
                     Meetups
                 </Text>
@@ -98,7 +127,7 @@ const Cale = ({navigation}) => {
             </View>
             {
                 meetings?(
-                    <View style={{flex:1}}>
+                    <View style={{flex:1, backgroundColor:"#fff"}}>
                         <ScrollView style={styles.scrollView}>
                             {meetings.map((item,index)=> {
                                 // console.log(meetings);

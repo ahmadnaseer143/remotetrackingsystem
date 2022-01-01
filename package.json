@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "^4.0.0",
+    "@react-native-community/google-signin": "github:react-native-community/google-signin",
     "@react-native-firebase/app": "^14.1.0",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",

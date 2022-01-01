@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
@@ -10,6 +10,7 @@ import UpdateProfile from './screens/UpdateProfile';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import MainScreen from "./screens/CalendarMeetupScreens/MainScreen";
 import SetMeeting from "./screens/CalendarMeetupScreens/SetMeeting";
+import Meetups from "./screens/CalendarMeetupScreens/Meetups";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -23,7 +24,7 @@ function HomeScreenn() {
   );
 }
 
-export default function App() {
+export default function App({navigation}) {
   return (
     // <>
     // <SetMeeting />
@@ -32,24 +33,10 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen options={{headerShown:false}} name="Login" component={LoginScreen} />
         <Stack.Screen options={{headerShown:false}} name="Register" component={RegisterScreen} />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
-        <Stack.Screen name="Meetups" component={Meetups}  options={{
-                headerRight: () => (
-                    <Button
-                      onPress={(navigation) => {
-                        // navigation.navigate("SetMeeting");
-                      }}
-                      title="Set Meeting"
-                      color="black"
-                    />
-                  ),
-            }}/>
-            <Stack.Screen name="SetMeeting" component={SetMeeting} />
+        <Stack.Screen name="Meetups" component={Meetups}  />
+        <Stack.Screen name="SetMeeting" component={SetMeeting} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {auth, app} from '../../firebase';
 
@@ -11,6 +12,8 @@ const SetMeeting = () => {
     const [myDate, setMyDate] = useState();
     const [meetingName, setMeetingName] = useState();
     const [meetingType, setMeetingType] = useState();
+
+    const navigation = useNavigation();
 
     // get collection meetings
     const itemRef = app.database();
@@ -30,7 +33,13 @@ const SetMeeting = () => {
             setMeetingName();
             setMeetingType();
             setTime();
-            alert("Meeting Created")
+            Alert.alert(
+                "Alert Title",
+                "Meeting Created",
+                [
+                  { text: "OK", onPress: () => navigation.goBack() }
+                ]
+            );
             // const db = getDatabase();
             // set(ref(db, 'meetings/' + meetingId), {
             //     meetingName:meetingName,
@@ -54,9 +63,11 @@ const SetMeeting = () => {
         const currentDate = selectedValue || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
+        // ("0" + (tempDate.getMonth() + 1)).slice(-2)
+        // ("0" + tempDate.getDate()).slice(-2)
 
         let tempDate = new Date(currentDate);
-        let fullDate = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' + tempDate.getDate(); 
+        let fullDate = tempDate.getFullYear() + '-' + ("0" + (tempDate.getMonth() + 1)).slice(-2) + '-' + ("0" + tempDate.getDate()).slice(-2); 
         let fullTime = tempDate.getHours() + ':' + tempDate.getMinutes();
 
         setMyDate(fullDate);
