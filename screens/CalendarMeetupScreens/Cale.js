@@ -1,8 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useState, useEffect } from 'react'
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Button, ScrollView, StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import { Agenda } from 'react-native-calendars';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { color } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import {auth, app} from '../../firebase';
 
@@ -48,7 +47,17 @@ const Cale = () => {
     // get collection meetings
     const itemRef = app.database().ref('/meetings');
 
+
+    const handleDelete = (item)=>{
+        var eventContactsRef = app.database().ref('/meetings');
+        var query = eventContactsRef.orderByChild('meetingName').equalTo(item.meetingName);
+        query.on('child_added', function(snapshot) {
+            snapshot.ref.remove();
+        })
+    }
+
     const loadItems = (day) => {
+        console.log("My Day is:", day.dateString);
         var myArray= [];
         for(var i in items){
             if(items[i].myDate===day.dateString){
@@ -101,6 +110,8 @@ const Cale = () => {
                 minDate={'2020-05-10'}
                 maxDate={'2030-05-30'}
                 onDayPress={(day)=>{
+                    console.log(day);
+                    console.log("My Day is part:", day.dateString);
                     setClickedDay(day.dateString);
                     setMeetings();
                     loadItems(day);
@@ -115,7 +126,7 @@ const Cale = () => {
                     textDefaultColor: "red",
                     dayTextColor: "#fff", // calendar day
                     dotColor: "white", // dots
-                  }}
+                }}
             />
             <View style={{position:"absolute", top:150, left:100}}>
                 <Text style={{alignItems:"center", textAlign:"center",paddingTop:10,fontSize:30,fontWeight:"bold"}}>
@@ -135,6 +146,11 @@ const Cale = () => {
                                     <View key={index} style={styles.item}>
                                         <Text>{item.meetingName}</Text>
                                         <Text>{item.time}</Text>
+                                        <TouchableOpacity onPress={()=>{
+                                            handleDelete(item);
+                                            }} style={{backgroundColor:"black"}}>
+                                            <Text style={{color:"white", fontSize:20}}>Delete</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 )
                                 })

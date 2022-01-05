@@ -29,7 +29,7 @@ const HomeScreen = () => {
   }, [navigation]);
 
   const getImage = ()=>{
-    console.log(auth.currentUser);
+    // console.log(auth.currentUser);
     setImage(auth.currentUser.photoURL);
   }
 

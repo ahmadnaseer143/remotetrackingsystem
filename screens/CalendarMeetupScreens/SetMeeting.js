@@ -35,7 +35,7 @@ const SetMeeting = () => {
             setTime();
             Alert.alert(
                 "Alert Title",
-                "Meeting Created",
+                "Meeting Created"
                 [
                   { text: "OK", onPress: () => navigation.goBack() }
                 ]
