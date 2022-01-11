@@ -36,7 +36,7 @@ const UpdateProfile = () => {
     useEffect(() => {
         itemRef.on('value', (snapshot) => {
             const allObjects = snapshot.val();
-            console.log(allObjects);
+            // console.log(allObjects);
             for(let oneObject in allObjects){
                 if(oneObject==auth.currentUser?.uid){
                     setEmail(allObjects[oneObject].email);
@@ -92,7 +92,7 @@ const UpdateProfile = () => {
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={updateUser}>
-                        <Text style={styles.buttonText}>Update</Text>
+                            <Text style={styles.buttonText}>Update</Text>
                     </TouchableOpacity>
                 </View>
         </View>
@@ -104,18 +104,9 @@ export default UpdateProfile
 const styles = StyleSheet.create({
     updateContainer:{
         flex:1,
-        backgroundColor:"#8644fa",
-        // backgroundColor:"yellow",
+        backgroundColor:"#c22ea3",
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    buttonContainer:{
-        backgroundColor: '#fff',
-        width:280,
-        height:70,
-        padding:20,
-        justifyContent:"center",
-        alignItems:"center"
     },
     inputContainer:{
         backgroundColor: '#fff',
@@ -124,15 +115,25 @@ const styles = StyleSheet.create({
         padding:20,
     },
     inputText:{
-        color:"#8644fa",
+        color:"#c22ea3",
         fontSize:20
     },
+    buttonContainer:{
+        backgroundColor: '#fff',
+        width:280,
+        height:70,
+        justifyContent:"center",
+        alignItems:"center",
+    },
     buttonText:{
-        color:"#8644fa",
-        fontSize:25,
+        backgroundColor: '#c22ea3',
+        borderRadius: 15,
+        color:"#fff",
+        fontSize:20,
         fontWeight:"bold",
-        borderBottomWidth:1,
-        borderColor:"#8644fa",
+        width:120,
+        height:30,
+        textAlign:"center"
     },
     input:{
         fontSize:20,

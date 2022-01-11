@@ -30,12 +30,20 @@ export default function App({navigation}) {
     // <SetMeeting />
     // </>
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ 
+        headerStyle: { backgroundColor: 'rgba(244,190,44,255)' },
+        headerTitleAlign: 'center',
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize:25
+        }, 
+        }}>
         <Stack.Screen options={{headerShown:false}} name="Login" component={LoginScreen} />
         <Stack.Screen options={{headerShown:false}} name="Register" component={RegisterScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
-        <Stack.Screen name="Meetups" component={Meetups}  />
+        <Stack.Screen name="UpdateProfile" component={UpdateProfile} options={{title:"Profile Update"}} />
+        <Stack.Screen name="Meetups" component={Meetups}  options={{title:"Meetings"}} />
         <Stack.Screen name="SetMeeting" component={SetMeeting} />
       </Stack.Navigator>
     </NavigationContainer>

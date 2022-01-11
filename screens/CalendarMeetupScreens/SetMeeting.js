@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {auth, app} from '../../firebase';
-
 const SetMeeting = () => {
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState();
@@ -34,12 +33,15 @@ const SetMeeting = () => {
             setMeetingType();
             setTime();
             Alert.alert(
-                "Alert Title",
-                "Meeting Created"
-                [
-                  { text: "OK", onPress: () => navigation.goBack() }
-                ]
-            );
+                'Heading',
+                'Meeting Created',
+                [{
+                  text: 'OK',
+                  onPress: () => navigation.goBack()
+                },
+                ],
+
+              )
             // const db = getDatabase();
             // set(ref(db, 'meetings/' + meetingId), {
             //     meetingName:meetingName,
@@ -94,7 +96,7 @@ const SetMeeting = () => {
             <View style={styles.inputContainer}>
                 <TextInput
                 placeholder="Meeting Name"
-                placeholderTextColor={"#8644fa"}
+                placeholderTextColor={"#c22ea3"}
                 value={meetingName}
                 onChangeText={text => setMeetingName(text)}
                 style={styles.input}
@@ -103,43 +105,40 @@ const SetMeeting = () => {
             <View style={styles.inputContainer}>
                 <TextInput
                 placeholder="Meeting Type"
-                placeholderTextColor={"#8644fa"}
+                placeholderTextColor={"#c22ea3"}
                 value={meetingType}
                 onChangeText={text => setMeetingType(text)}
                 style={styles.input}
                 />
             </View>
-            {myDate?(
-                <>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                        placeholder="Set Date"
-                        placeholderTextColor={"#8644fa"}
-                        value={myDate}
-                        onChangeText={text => setMyDate(text)}
-                        style={styles.input}
-                        />
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <TextInput
-                        placeholder="Set Time"
-                        placeholderTextColor={"#8644fa"}
-                        value={time}
-                        onChangeText={text => setTime(text)}
-                        style={styles.input}
-                        />
-                    </View>
-                </>
-            ):<Text></Text>
-            }
-            <View style={styles.buttonContainer}>
+            <View style={styles.inputContainer}>
+                <TextInput
+                placeholder="Set Date"
+                placeholderTextColor={"#c22ea3"}
+                value={myDate}
+                onChangeText={text => setMyDate(text)}
+                style={styles.input}
+                onFocus={showDatepicker}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <TextInput
+                placeholder="Set Time"
+                placeholderTextColor={"#c22ea3"}
+                value={time}
+                onChangeText={text => setTime(text)}
+                style={styles.input}
+                onFocus={showTimepicker}
+                />
+            </View>
+            {/* <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={showDatepicker}>
                     <Text style={styles.buttonText}>Set Date</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={showTimepicker}>
                     <Text style={styles.buttonText}>Set Time</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
 
             {show && (
                 <DateTimePicker
@@ -166,42 +165,43 @@ export default SetMeeting
 const styles = StyleSheet.create({
     updateContainer:{
         flex:1,
-        backgroundColor:"#050214",
+        backgroundColor:"#c22ea3",
         // backgroundColor:"yellow",
         justifyContent: 'center',
         alignItems: 'center',
     },
     buttonContainer:{
+        backgroundColor: '#fff',
         width:280,
         height:70,
-        padding:20,
         justifyContent:"center",
         alignItems:"center",
-        flexDirection:"row",
     },
     inputContainer:{
-        backgroundColor: 'black',
+        backgroundColor: '#fff',
         width:280,
         height:100,
         padding:20,
     },
     inputText:{
-        color:"#8644fa",
+        color:"#c22ea3",
         fontSize:20
     },
     buttonText:{
-        color:"#8644fa",
+        backgroundColor: '#c22ea3',
+        borderRadius: 15,
+        color:"#fff",
         fontSize:25,
         fontWeight:"bold",
-        borderBottomWidth:1,
-        borderColor:"#8644fa",
-        marginRight:20
+        width:200,
+        height:40,
+        textAlign:"center"
     },
     input:{
         fontSize:20,
         paddingTop:10,
         borderBottomWidth:1,
         borderBottomColor:"#784f9d",
-        color:"#8644fa"
+        color:"#c22ea3"
     },
 })

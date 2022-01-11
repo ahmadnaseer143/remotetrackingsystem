@@ -3,9 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, Image, Button, Touchable } from 'react-native'
 import { auth, app } from '../firebase';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import axios from 'axios';
 
 const HomeScreen = () => {
   const [image, setImage] = useState(null);
+  const [quote, setQuote] = useState();
   const navigation = useNavigation();
 
   // <TouchableOpacity
@@ -22,6 +25,14 @@ const HomeScreen = () => {
             navigation.navigate("Meetups")
           }} style={styles.button}>
             <Text style={styles.buttonText}>Meetups</Text>
+          </TouchableOpacity>
+          ),
+        headerLeft: () => (
+          <TouchableOpacity style={{backgroundColor:"#c22ea3", padding:12, borderRadius:15}}
+                onPress={handleSignOut}
+          >
+            <Icon name="logout" size={25} color="#fff"  />
+            {/* <Text style={{color:"#fff", fontSize:18}}>Log Out</Text>  */}
           </TouchableOpacity>
           ),
 
@@ -64,8 +75,32 @@ const HomeScreen = () => {
       .catch(error => alert(error.message))
   }
 
+  const getMotivationalQuote = () => {
+    const options = {
+      method: "POST",
+      url: "https://motivational-quotes1.p.rapidapi.com/motivation",
+      headers: {
+        "content-type": "application/json",
+        "x-rapidapi-host": "motivational-quotes1.p.rapidapi.com",
+        "x-rapidapi-key": "dba998558fmsh5ad7c3364d357f1p18263cjsne15b101e6edc",
+      },
+      data: { key1: "value", key2: "value" },
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        // console.log(response.data);
+        setQuote(response.data)
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
     getImage();
+    getMotivationalQuote();
   }, [])
 
   return (
@@ -77,6 +112,9 @@ const HomeScreen = () => {
             {image? <Image style={styles.avatar} source={{uri: image}}/> : <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/> }
           </TouchableOpacity>
           <View style={styles.body}>
+            <View style={styles.quote}>
+              <Text style={styles.qtxt}>{quote}</Text>
+            </View>
             <View style={styles.bodyContent}>
               <TouchableOpacity style={styles.buttonContainer}
                 onPress={()=>{
@@ -84,13 +122,14 @@ const HomeScreen = () => {
                 }}
               >
                 <Text style={{color:"#fff", fontSize:18}}>Update Profile</Text>  
-              </TouchableOpacity>              
-              <TouchableOpacity style={styles.buttonContainer}
-                onPress={handleSignOut}
-              >
-                <Text style={{color:"#fff", fontSize:18}}>Log Out</Text> 
               </TouchableOpacity>
             </View>
+            {/* <TouchableOpacity style={styles.buttonContainer}
+                onPress={handleSignOut}
+              >
+                <Icon name="logout" size={30} color="#fff" />
+                <Text style={{color:"#fff", fontSize:18}}>Log Out</Text> 
+              </TouchableOpacity> */}    
       </View>
     </View>
   )
@@ -100,7 +139,7 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   header:{
-    backgroundColor: "yellow",
+    backgroundColor: "#c22ea3",
     height:200,
   },
   avatar: {
@@ -116,7 +155,6 @@ const styles = StyleSheet.create({
     marginTop:100,
   },
   bodyContent: {
-    flex: 1,
     alignItems: 'center',
     padding:30,
   },
@@ -127,20 +165,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom:20,
     width:250,
-    borderRadius:25,
+    borderRadius:15,
     backgroundColor: "#c22ea3",
-    borderColor:"yellow",
-    borderWidth:1
   },
   button: {
     backgroundColor: '#c22ea3',
     padding: 10,
-    borderRadius: 30,
+    borderRadius: 15,
     alignItems: 'center',
   },
   buttonText: {
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+  },
+  quote: {
+    width: "100%",
+    overflow: "visible",
+    padding: 13,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  qtxt: {
+    fontSize: 20,
+    flexWrap: "wrap",
+    fontWeight: "bold",
+    fontFamily: "monospace",
+    color:"#c22ea3"
   },
 })
