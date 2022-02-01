@@ -123,6 +123,13 @@ const HomeScreen = () => {
               >
                 <Text style={{color:"#fff", fontSize:18}}>Update Profile</Text>  
               </TouchableOpacity>
+              <TouchableOpacity style={styles.buttonContainer}
+                onPress={()=>{
+                  navigation.navigate("AllTasks");
+                }}
+              >
+                <Text style={{color:"#fff", fontSize:18}}>View My Tasks</Text>  
+              </TouchableOpacity>
             </View>
             {/* <TouchableOpacity style={styles.buttonContainer}
                 onPress={handleSignOut}
@@ -180,6 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   quote: {
+    marginTop:-50,
     width: "100%",
     overflow: "visible",
     padding: 13,

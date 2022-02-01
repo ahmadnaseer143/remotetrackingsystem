@@ -11,6 +11,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import MainScreen from "./screens/CalendarMeetupScreens/MainScreen";
 import SetMeeting from "./screens/CalendarMeetupScreens/SetMeeting";
 import Meetups from "./screens/CalendarMeetupScreens/Meetups";
+import TimeTracker from "./screens/TimeTrackerScreens/TimeTracker";
+import AllTasks from "./screens/TimeTrackerScreens/AllTasks";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -26,9 +28,12 @@ function HomeScreenn() {
 
 export default function App({navigation}) {
   return (
-    // <>
-    // <SetMeeting />
-    // </>
+    // <NavigationContainer>
+    //   <Stack.Navigator>
+    //     <Stack.Screen name="AllTasks" component={AllTasks} />
+    //     <Stack.Screen name="TimeTracker" component={TimeTracker} />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ 
         headerStyle: { backgroundColor: 'rgba(244,190,44,255)' },
@@ -45,6 +50,8 @@ export default function App({navigation}) {
         <Stack.Screen name="UpdateProfile" component={UpdateProfile} options={{title:"Profile Update"}} />
         <Stack.Screen name="Meetups" component={Meetups}  options={{title:"Meetings"}} />
         <Stack.Screen name="SetMeeting" component={SetMeeting} />
+        <Stack.Screen name="AllTasks" component={AllTasks} />
+        <Stack.Screen name="TimeTracker" component={TimeTracker} />
       </Stack.Navigator>
     </NavigationContainer>
   );
